@@ -6,7 +6,7 @@ Summary:
 
 Robot (Vision 60):
 1) Install deps: espeak, alsa-utils
-2) Run Flask+ROS2 backend (e.g., move10.py)
+2) Run Flask+ROS2 backend: move14.py
 3) Optional TTS test: espeak "Vision sixty speaking test"
 
 Listener (Laptop/PC):

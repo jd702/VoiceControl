@@ -5,36 +5,57 @@ Speech‑driven control for the Vision 60 robot. A local listener records audio,
 ## What’s in this repo
 
 - `VoiceControl4.py`: Microphone listener, Whisper transcription, intent parsing, HTTP commands.
+- `move14.py`: Flask + ROS2 backend (robot-side API server).
 - `VoiceControlInstructions`: Legacy notes (superseded by this README + INSTALLATION).
-- `HLSA_VoiceControl.drawio` / `HLSA_VoiceControl.jpg`: Architecture diagram.
+- [docs/images/architecture.svg](docs/images/architecture.svg): System architecture diagram.
+- [docs/images/endpoints.svg](docs/images/endpoints.svg): REST endpoint overview.
 
-## Architecture (HLSA)
+## Architecture
 
-The flow is:
+![Architecture](docs/images/architecture.svg)
+
+Flow summary:
 
 1) Mic audio → Whisper transcription on the laptop/PC
 2) Intent parsing (move/turn/action/mode/stop)
-3) HTTP POST to Flask+ROS2 on the robot
-4) Robot executes command
+3) HTTP POST to the robot backend
+4) Robot executes command + streams telemetry
 
-See the diagram in [HLSA_VoiceControl.jpg](HLSA_VoiceControl.jpg).
+## API overview
+
+![Endpoints](docs/images/endpoints.svg)
+
+Key endpoints (see [move14.py](move14.py)):
+
+- Commands: `POST /command`, `POST /mpc/goal`, `POST /command/send_local_goal`, `POST /command/send_goal`
+- Status: `GET /status`, `GET /gps`, `GET /imu`, `GET /odom`
+- Point clouds: `GET /pointcloud`, `GET /obstmap`, plus compressed variants
+- Camera proxy: `GET /proxy_camera_feed/<camera>`, `GET /proxy_camera_snapshot/<camera>`
+- Metrics: `GET /metrics`, `GET /pc_metrics`, `GET /pc_status`
 
 ## Quick start
 
 1) Install dependencies on the robot and the listener machine (see [INSTALLATION.md](INSTALLATION.md)).
 2) Update the robot IP in `VoiceControl4.py`:
    - `FLASK_API = "http://<ROBOT_IP>:5002"`
-3) Start the Flask+ROS2 backend on the robot.
+3) Start the Flask+ROS2 backend on the robot:
+   - `python3 move14.py`
 4) Run the listener on your laptop/PC:
    - `python3 VoiceControl4.py`
 
 ## Configuration
 
-Edit `VoiceControl4.py`:
+Edit [VoiceControl4.py](VoiceControl4.py):
 
 - `FLASK_API`: Robot backend URL.
 - `ENABLE_TTS`: If `True`, the laptop/PC speaks back using `pyttsx3`.
 - `whisper.load_model("base")`: Change to `"tiny" | "base" | "small" | "medium" | "large"` based on speed vs accuracy.
+
+Edit [move14.py](move14.py):
+
+- `ENABLE_TTS`: Robot speaks back using `espeak`.
+- `ROS_CAMERA_BASE_URL`: MJPEG server used by proxy endpoints.
+- `USE_LZ4`: Enable LZ4 for compressed point clouds if the client supports it.
 
 ## Voice commands
 

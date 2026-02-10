@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <defs>
+    <style>
+      .box { fill:#ffffff; stroke:#24292f; stroke-width:2; rx:14; ry:14; }
+      .title { font:700 20px Arial, sans-serif; fill:#24292f; }
+      .text { font:16px Arial, sans-serif; fill:#24292f; }
+      .tag { font:12px Arial, sans-serif; fill:#0969da; }
+    </style>
+  </defs>
+
+  <rect class="box" x="40" y="40" width="520" height="200" />
+  <text class="title" x="60" y="75">Command Endpoints</text>
+  <text class="text" x="60" y="110">POST /command</text>
+  <text class="text" x="60" y="135">POST /mpc/goal</text>
+  <text class="text" x="60" y="160">POST /command/send_local_goal</text>
+  <text class="text" x="60" y="185">POST /command/send_goal</text>
+  <text class="tag" x="60" y="210">movement · actions · planner goals</text>
+
+  <rect class="box" x="640" y="40" width="520" height="200" />
+  <text class="title" x="660" y="75">Status & Telemetry</text>
+  <text class="text" x="660" y="110">GET /status · /gps · /imu · /odom</text>
+  <text class="text" x="660" y="135">GET /pc_status · /pc_metrics</text>
+  <text class="text" x="660" y="160">GET /metrics (Prometheus)</text>
+
+  <rect class="box" x="40" y="280" width="520" height="200" />
+  <text class="title" x="60" y="315">Point Clouds</text>
+  <text class="text" x="60" y="350">GET /pointcloud</text>
+  <text class="text" x="60" y="375">GET /obstmap</text>
+  <text class="text" x="60" y="400">GET /pointcloud_compressed</text>
+  <text class="text" x="60" y="425">GET /obstmap_compressed</text>
+
+  <rect class="box" x="640" y="280" width="520" height="200" />
+  <text class="title" x="660" y="315">Camera Proxy</text>
+  <text class="text" x="660" y="350">GET /proxy_camera_feed/&lt;camera&gt;</text>
+  <text class="text" x="660" y="375">GET /proxy_camera_snapshot/&lt;camera&gt;</text>
+  <text class="tag" x="660" y="405">mjpeg stream + snapshots</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <defs>
+    <style>
+      .box { fill:#f6f8fa; stroke:#24292f; stroke-width:2; rx:16; ry:16; }
+      .title { font:700 20px Arial, sans-serif; fill:#24292f; }
+      .text { font:16px Arial, sans-serif; fill:#24292f; }
+      .arrow { stroke:#0969da; stroke-width:3; fill:none; marker-end:url(#arrowhead); }
+      .note { font:14px Arial, sans-serif; fill:#57606a; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0969da" />
+    </marker>
+  </defs>
+
+  <rect class="box" x="40" y="60" width="320" height="170" />
+  <text class="title" x="60" y="95">Listener (Laptop/PC)</text>
+  <text class="text" x="60" y="130">VoiceControl4.py</text>
+  <text class="text" x="60" y="155">Mic → Whisper → Intent</text>
+  <text class="note" x="60" y="185">HTTP POST /command</text>
+
+  <rect class="box" x="440" y="60" width="320" height="170" />
+  <text class="title" x="460" y="95">Backend (Robot)</text>
+  <text class="text" x="460" y="130">move14.py</text>
+  <text class="text" x="460" y="155">Flask + ROS2</text>
+  <text class="note" x="460" y="185">REST API + Telemetry</text>
+
+  <rect class="box" x="840" y="60" width="320" height="170" />
+  <text class="title" x="860" y="95">Vision 60</text>
+  <text class="text" x="860" y="130">ROS2 Topics</text>
+  <text class="text" x="860" y="155">/command, /mpc, /sensors</text>
+
+  <path class="arrow" d="M360 145 L440 145" />
+  <path class="arrow" d="M760 145 L840 145" />
+
+  <rect class="box" x="240" y="280" width="720" height="180" />
+  <text class="title" x="260" y="315">Telemetry & Visualization</text>
+  <text class="text" x="260" y="350">/status, /gps, /imu, /odom</text>
+  <text class="text" x="260" y="375">/pointcloud, /obstmap (raw + compressed)</text>
+  <text class="text" x="260" y="400">/proxy_camera_feed, /proxy_camera_snapshot</text>
+
+  <path class="arrow" d="M600 230 L600 280" />
+</svg>
