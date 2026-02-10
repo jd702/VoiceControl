@@ -1,9 +1,8 @@
 # Installation & Setup
-# Installation & Setup
 
 This guide assumes:
 
-- The Vision 60 robot runs the Flask+ROS2 backend ([move14.py](move14.py)).
+- The Vision 60 robot runs a private Flask+ROS2 backend (not included in this repo).
 - A separate laptop/PC runs the voice listener ([VoiceControl4.py](VoiceControl4.py)).
 
 ## Robot (Vision 60) setup
@@ -27,7 +26,7 @@ python3 -m pip install flask flask-cors prometheus-client requests numpy opencv-
 Notes:
 
 - `rclpy`, `cv_bridge`, and ROS2 message packages come from your ROS2 install.
-- `hilbert` is a local module required by [move14.py](move14.py). Ensure it is available on the robot’s PYTHONPATH.
+- `hilbert` is a local module required by the backend. Ensure it is available on the robot’s PYTHONPATH.
 
 ### 3) Run the backend
 
@@ -36,7 +35,7 @@ Notes:
 ros2s
 
 cd ~/flask_ros2
-python3 move14.py
+python3 <backend_file>.py
 ```
 
 ### 4) Optional: test TTS on the robot

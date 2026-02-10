@@ -8,7 +8,7 @@ import requests
 import re
 
 # ===== config =====
-FLASK_API = "http://192.168.168.105:5002"  # Vision 60 IP
+FLASK_API = "http://<ROBOT_IP>:5002"  # Vision 60 IP
 ENABLE_TTS = False  # listener speaking (optional)
 
 if ENABLE_TTS:
