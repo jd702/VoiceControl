@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0" version="28.2.3">
+  <diagram name="Page-1" id="8aM2RPHdAJTgcYmiesbn">
+    <mxGraphModel dx="684" dy="1308" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-1" value="&lt;div&gt;User Speaks&lt;br&gt;&lt;hr&gt;&lt;/div&gt;&lt;div&gt;&quot;forward&quot;&lt;/div&gt;&lt;div&gt;laptop microphone captures raw PCM audio frames&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="70" y="150" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-3" value="&lt;div&gt;command.wav is created.&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;hr&gt;VoiceControl3.py uses PyAudio to capture 3-4 seconds of sound&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-4" value="&lt;div&gt;Whisper ASR (Automatic Speech Recognition)&amp;nbsp;&lt;hr&gt;&lt;/div&gt;&lt;div&gt;OpenAI&#39;s Whisper model loads command.wav and performs speech-to-text&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;uses feature extraction (Mel spectrograms), passes it through a transformer model, and outputs text.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="50" y="390" width="260" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-5" value="*Whisper was trained on thousands of hours of speech it handles noise, accents well.*" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="310" y="510" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-6" value="&lt;div&gt;Command Classifier&lt;/div&gt;&lt;div&gt;&lt;hr&gt;Whisper gives us the plain text, we map it to robots commands.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Look for keywords:&lt;hr&gt;&lt;/div&gt;&lt;div&gt;&quot;forward&quot; → /command/move_forward&lt;br&gt;&quot;backward&quot; → /command/move_backward&lt;br&gt;&quot;left&quot; → /command/turn_left&lt;br&gt;&quot;right&quot; → /command/turn_right&lt;br&gt;&quot;stop&quot; → /command/stop&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="40" y="550" width="280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-8" value="&lt;div&gt;HTTP Request to Back-end&lt;/div&gt;&lt;div&gt;&lt;hr&gt;Once mapped, listener sends a JSON POST reuqest to Flask API on Vision 60&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;requests.post(f&quot;{FLASK_API}/command&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="37.5" y="750" width="285" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Ni2OFfF9yP4McE0GwvyM-9" value="&lt;div&gt;ROS2 Publishes Command&lt;/div&gt;&lt;div&gt;&lt;hr&gt;The flask server hands off to ROS2 publishers (/mcu/command/manual_twist)&lt;/div&gt;&lt;div&gt;&lt;hr&gt;Motors respond, Vision 60 moves.&lt;/div&gt;&lt;div&gt;&lt;hr&gt;Robot speaks back &quot;Executing move forward for 1 seconds&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" vertex="1" parent="1">
+          <mxGeometry x="37.5" y="910" width="285" height="150" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
