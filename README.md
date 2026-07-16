@@ -1,79 +1,79 @@
-# Voice Control (Vision 60)
+# Voice Control for Vision 60
 
-Speech‑driven control for the Vision 60 robot. A local listener records audio, uses OpenAI Whisper for speech recognition, parses intents, and sends HTTP commands to the robot’s Flask+ROS2 backend.
+Voice Control records a short microphone sample, transcribes speech locally with OpenAI Whisper, maps recognized phrases to robot intents, and sends commands to a Flask + ROS2 bridge.
 
-## What’s in this repo
+No OpenAI API key is required: this project uses the locally installed open-source Whisper model.
 
-- `VoiceControl4.py`: Microphone listener, Whisper transcription, intent parsing, HTTP commands.
-- Backend API server (robot-side) is private and not included in this repo.
-- `VoiceControlInstructions`: Legacy notes (superseded by this README + INSTALLATION).
-- [docs/images/architecture.svg](docs/images/architecture.svg): System architecture diagram.
-- [docs/images/endpoints.svg](docs/images/endpoints.svg): REST endpoint overview.
+## Capabilities
+
+- Forward and backward movement with spoken durations
+- Left and right turns
+- Stop, sit, stand, and walk actions
+- Manual-mode command
+- Number and number-word duration parsing
+- Optional local text-to-speech feedback
+- Automatic manual/walk priming before the first movement command
 
 ## Architecture
 
-![Architecture](docs/images/architecture.svg)
+![Voice Control architecture](docs/images/architecture.svg)
 
-Flow summary:
+Detailed architecture:
 
-1) Mic audio → Whisper transcription on the laptop/PC
-2) Intent parsing (move/turn/action/mode/stop)
-3) HTTP POST to the robot backend
-4) Robot executes command + streams telemetry
-
-## API overview
-
-![Endpoints](docs/images/endpoints.svg)
-
-Key endpoints (robot backend):
-
-- Commands: `POST /command`, `POST /mpc/goal`, `POST /command/send_local_goal`, `POST /command/send_goal`
-- Status: `GET /status`, `GET /gps`, `GET /imu`, `GET /odom`
-- Point clouds: `GET /pointcloud`, `GET /obstmap`, plus compressed variants
-- Camera proxy: `GET /proxy_camera_feed/<camera>`, `GET /proxy_camera_snapshot/<camera>`
-- Metrics: `GET /metrics`, `GET /pc_metrics`, `GET /pc_status`
+- [High-Level System Architecture](docs/HSLA.md)
+- [Endpoint overview](docs/images/endpoints.svg)
 
 ## Quick start
 
-1) Install dependencies on the robot and the listener machine (see [INSTALLATION.md](INSTALLATION.md)).
-2) Update the robot IP in `VoiceControl4.py`:
-   - `FLASK_API = "http://<ROBOT_IP>:5002"`
-3) Start the Flask+ROS2 backend on the robot (private backend).
-4) Run the listener on your laptop/PC:
-   - `python3 VoiceControl4.py`
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+export VOICE_FLASK_API=http://ROBOT_HOST:5002
+python3 VoiceControl4.py
+```
+
+Replace `ROBOT_HOST` locally. Never commit the real robot address.
+
+See [INSTALLATION.md](INSTALLATION.md) for operating-system audio dependencies and backend checks.
+
+## Supported phrases
+
+- `forward for 3 seconds`
+- `backward two seconds`
+- `turn left for five seconds`
+- `turn right`
+- `sit`
+- `stand`
+- `walk`
+- `stop`
+- `enter manual mode`
+
+If no duration is provided, movement defaults to one second.
 
 ## Configuration
 
-Edit [VoiceControl4.py](VoiceControl4.py):
+| Variable or setting | Purpose | Default |
+| --- | --- | --- |
+| `VOICE_FLASK_API` | Robot Flask + ROS2 API base URL | `http://127.0.0.1:5002` |
+| `ENABLE_TTS` | Enable listener-side spoken feedback | `False` |
+| Whisper model | Accuracy/speed tradeoff | `base` |
 
-- `FLASK_API`: Robot backend URL.
-- `ENABLE_TTS`: If `True`, the laptop/PC speaks back using `pyttsx3`.
-- `whisper.load_model("base")`: Change to `"tiny" | "base" | "small" | "medium" | "large"` based on speed vs accuracy.
+## Safety
 
-Backend configuration is robot‑side and private. Keep sensitive values out of this repo.
+- Validate E-stop independently before testing voice movement.
+- Begin in simulation, dry-run tooling, or a secured robot area.
+- Keep the robot API on a trusted network and require server-side authorization for production use.
+- Review [docs/SECURITY.md](docs/SECURITY.md) before publishing changes.
 
-## Voice commands
+## Repository scope
 
-Examples that the parser understands:
-
-- “forward for 3 seconds”
-- “backward 2 seconds”
-- “turn left for five seconds”
-- “turn right”
-- “sit”, “stand”, “walk”, “stop”
-- “enter manual mode”
-
-Notes:
-
-- If no duration is given, a default of 1 second is used.
-- The listener primes the robot (manual mode + walk action) before the first movement command.
+This public repository contains the voice listener and documentation. Robot-side backend implementation and deployment-specific configuration are intentionally excluded.
 
 ## Troubleshooting
 
-- Can’t reach the robot: run `curl http://<ROBOT_IP>:5002/status`.
-- Audio capture errors: ensure `portaudio` is installed and your mic works.
-- Slow transcription: try a smaller Whisper model (e.g., `"tiny"`).
-
-## License
-
-Add a license if you plan to distribute this repo.
+- Backend unreachable: `curl "$VOICE_FLASK_API/status"`
+- Microphone errors: verify OS microphone permissions and PyAudio/PortAudio installation.
+- Slow transcription: select a smaller Whisper model such as `tiny`.
+- Poor recognition: verify input gain and reduce background noise.

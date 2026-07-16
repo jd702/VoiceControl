@@ -70,28 +70,28 @@ python3 -m pip install openai-whisper torch pyaudio requests
 # python3 -m pip install pyttsx3
 ```
 
-### 3) Configure the robot IP
+### 3) Configure the robot API locally
 
-Edit [VoiceControl4.py](VoiceControl4.py) and set:
-
-```python
-FLASK_API = "http://<ROBOT_IP>:5002"
+```bash
+export VOICE_FLASK_API=http://ROBOT_HOST:5002
 ```
+
+Replace `ROBOT_HOST` in your local shell only. Do not commit deployment addresses.
 
 ### 4) Connectivity check
 
 ```bash
-curl http://<ROBOT_IP>:5002/status
+curl "$VOICE_FLASK_API/status"
 ```
 
 ### 5) Prime robot to the correct mode (one time)
 
 ```bash
-curl -X POST http://<ROBOT_IP>:5002/command \
+curl -X POST "$VOICE_FLASK_API/command" \
 	-H 'Content-Type: application/json' \
 	-d '{"topic":"/command/setControlMode"}'
 
-curl -X POST http://<ROBOT_IP>:5002/command \
+curl -X POST "$VOICE_FLASK_API/command" \
 	-H 'Content-Type: application/json' \
 	-d '{"topic":"/command/setAction","command":{"action":"walk"}}'
 ```

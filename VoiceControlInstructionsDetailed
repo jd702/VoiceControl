@@ -1,0 +1,113 @@
+Voice Control System - Quick Reference
+
+📚 FULL DOCUMENTATION
+- README.md: Complete overview, voice commands, troubleshooting
+- INSTALLATION.md: Detailed setup for robot and listener
+- docs/FRAMEWORK.md: System architecture and framework explanation
+
+🎤 VOICE COMMANDS QUICK REFERENCE
+
+Movement (with optional duration):
+  • "forward [for] [X seconds]" - Move forward
+  • "backward / back [for] [X seconds]" - Move backward
+  • "turn left / left [for] [X seconds]" - Turn left
+  • "turn right / right [for] [X seconds]" - Turn right
+
+  Duration can be digits (1-99) or words (one, two, three... twenty five)
+  Default: 1 second if not specified
+
+Actions (instant):
+  • "sit" - Robot sits down
+  • "stand" - Robot stands up
+  • "walk" - Set walking action
+  • "stop" - Stop all movement immediately
+
+Modes:
+  • "manual mode / enter manual / go manual" - Manual control mode
+
+🤖 ROBOT SETUP (Vision 60)
+
+1. Install system dependencies:
+   sudo apt install -y espeak alsa-utils
+
+2. Install Python packages:
+   pip install flask flask-cors prometheus-client requests numpy opencv-python pyproj
+
+3. Start backend (after sourcing ROS2):
+   cd ~/flask_ros2
+   python3 move14.py
+
+💻 LISTENER SETUP (Laptop/PC)
+
+1. Install system dependencies:
+   Linux: sudo apt install -y ffmpeg portaudio19-dev python3-dev
+   macOS: brew install ffmpeg portaudio
+
+2. Install Python packages:
+   pip install openai-whisper torch pyaudio requests
+
+3. Configure robot IP in VoiceControl4.py:
+   FLASK_API = "http://<ROBOT_IP>:5002"
+
+4. Run listener:
+   python3 VoiceControl4.py
+
+⚙️ CONFIGURATION
+
+VoiceControl4.py:
+  • VOICE_FLASK_API: Robot backend URL (default: http://127.0.0.1:5002)
+  • ENABLE_TTS: Enable local text-to-speech (default: False)
+  • whisper.load_model(): Model size - tiny/base/small/medium/large
+    - tiny: fastest, less accurate
+    - large: slowest, most accurate
+    - base: good balance (default)
+
+move14.py:
+  • ENABLE_TTS: Robot speaks back using espeak
+  • ROS_CAMERA_BASE_URL: MJPEG server for camera proxy
+  • USE_LZ4: Enable LZ4 compression for point clouds
+
+🔧 TROUBLESHOOTING
+
+Robot not responding:
+  curl http://<ROBOT_IP>:5002/status
+
+Microphone issues:
+  - Verify portaudio is installed
+  - Test microphone with system audio tools
+
+Slow transcription:
+  - Use smaller Whisper model (tiny or base)
+  - Check CPU/GPU resources
+
+Commands not recognized:
+  - Speak clearly with pauses
+  - Check command syntax above
+  - Commands are case-insensitive
+
+🌐 API ENDPOINTS
+
+Commands:
+  POST /command - Send movement/action/mode commands
+  POST /mpc/goal - Send MPC goal
+  POST /command/send_local_goal - Send local goal
+  POST /command/send_goal - Send global goal
+
+Status & Telemetry:
+  GET /status - Robot status
+  GET /gps - GPS data
+  GET /imu - IMU data
+  GET /odom - Odometry data
+  GET /metrics - System metrics
+
+Point Clouds:
+  GET /pointcloud - Full point cloud
+  GET /obstmap - Obstacle map
+  GET /pointcloud_compressed - LZ4 compressed
+  GET /obstmap_compressed - LZ4 compressed
+
+Camera:
+  GET /proxy_camera_feed/<camera> - Video stream
+  GET /proxy_camera_snapshot/<camera> - Snapshot
+
+📖 For detailed documentation, see README.md and INSTALLATION.md

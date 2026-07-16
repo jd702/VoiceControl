@@ -6,9 +6,10 @@ import pyaudio
 import wave
 import requests
 import re
+import os
 
 # ===== config =====
-FLASK_API = "http://<ROBOT_IP>:5002"  # Vision 60 IP
+FLASK_API = os.getenv("VOICE_FLASK_API", "http://127.0.0.1:5002").rstrip("/")
 ENABLE_TTS = False  # listener speaking (optional)
 
 if ENABLE_TTS:
@@ -196,4 +197,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

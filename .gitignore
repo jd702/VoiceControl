@@ -1,6 +1,20 @@
 # Media files
 *.mov
 *.MOV
+*.mp4
+*.MP4
+*.wav
+
+# Local environments and configuration
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
 
 # Private backend
 move14.py
