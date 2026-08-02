@@ -4,6 +4,15 @@ Voice Control records a short microphone sample, transcribes speech locally with
 
 No OpenAI API key is required: this project uses the locally installed open-source Whisper model.
 
+## Demo video
+
+[Watch the Vision 60 Voice Control demo (MP4)](https://github.com/jd702/VoiceControl/releases/download/demo-2026-08/VoiceControl_Demo.mp4)
+
+The demonstration shows local speech recognition driving Vision 60 commands.
+It is published as a browser-compatible H.264/AAC
+[GitHub Release asset](https://github.com/jd702/VoiceControl/releases/tag/demo-2026-08)
+with source device and location metadata removed.
+
 ## Capabilities
 
 - Forward and backward movement with spoken durations
